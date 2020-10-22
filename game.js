@@ -96,12 +96,12 @@ function drawPaddle(paddle) {
 // Bricks property
 let brick = {
   rowCount: 3,
-  columnCount: 8,
-  width: 100,
+  columnCount: 16,
+  width: 53,
   height: 25,
   padding: 10,
   offsetTop: 30,
-  offsetLeft: 60,
+  offsetLeft: 0,
 }
 
 // Create Bricks
@@ -150,7 +150,32 @@ function brickCollisionCalculate() {
 
 function resetGame(event) {
   if (event.key === "r") {
-    document.location.reload();
+    // Reset ball
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height - 30;
+    color = "blue";
+    
+    // Reset bricks
+    for (let x = 0; x < brick.columnCount; x++) {
+      for (let y = 0; y < brick.rowCount; y++) {
+        bricks[x][y].alive = 1;
+        bricks[x][y].color = getRandomColor();
+      }
+    }
+    // Reset Paddle
+    paddle.x = (canvas.width - 150) / 2;
+    paddle.color = getRandomColor();
+    
+    // Reset game
+    gameOver = false;
+  }
+}
+
+function startGame(event) {
+  if (event.key === " ") {
+    if(!start) {
+      start = true;
+    }
   }
 }
 
@@ -158,6 +183,7 @@ function resetGame(event) {
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 document.addEventListener("keydown", resetGame, false);
+document.addEventListener("keydown", startGame, false);
 
 function keyDownHandler(event) {
   if (event.key == "Right" || event.key == "ArrowRight") {
@@ -192,9 +218,13 @@ function drawGameOver(state) {
 }
 
 let count = 0;
+let start = false;
 
 // Draw Our Game
 function draw() {
+  // Clear the screen
+  context.clearRect(0,0,canvas.width, canvas.height);
+
   // Count Left
   count = 0;
   for (x = 0; x < brick.columnCount; x++) {
@@ -204,6 +234,7 @@ function draw() {
       }
     }
   }
+
   // Game Logic
   if (gameOver) {
     drawGameOver(true);
@@ -213,9 +244,8 @@ function draw() {
   } else if (count === 0 ) {
     drawGameOver(false);
     //clearInterval(interval);
-  } else {
+  } else if(start) {
     // Draw
-    context.clearRect(0,0,canvas.width, canvas.height);
     drawBall(ball);
     drawPaddle(paddle);
     drawBricks();
@@ -225,9 +255,12 @@ function draw() {
     context.font = "16px Arial";
     context.fillStyle = "black";
     context.fillText("Left: " + count,8, 20);
-    requestAnimationFrame(draw);
+  } else {
+    context.font = "30px Arial";
+    context.fillStyle = "black";
+    context.fillText("Press Space to start", (canvas.width/2)-150, canvas.height/2);
   }
-  
+  requestAnimationFrame(draw);
 }
 
 // Define Game Loop
