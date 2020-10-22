@@ -214,11 +214,6 @@ function draw() {
     drawGameOver(false);
     //clearInterval(interval);
   } else {
-    // Draw Left
-    context.font = "16px Arial";
-    context.fillStyle = "black";
-    context.fillText("Left: " + count,8, 20);
-    
     // Draw
     context.clearRect(0,0,canvas.width, canvas.height);
     drawBall(ball);
@@ -226,6 +221,10 @@ function draw() {
     drawBricks();
     brickCollisionCalculate();
 
+    // Draw Left
+    context.font = "16px Arial";
+    context.fillStyle = "black";
+    context.fillText("Left: " + count,8, 20);
     requestAnimationFrame(draw);
   }
   
