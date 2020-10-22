@@ -211,7 +211,6 @@ function draw() {
         }
       }
     }
-    console.log(count);
 
     // Draw Left
     context.font = "16px Arial";
