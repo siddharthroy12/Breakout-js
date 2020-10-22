@@ -27,8 +27,8 @@ let ball = {
   x: canvas.width / 2,
   y: canvas.height - 30,
   velocity: {
-    x:  5.5,
-    y: -5.5,
+    x:  7.5,
+    y: -7.5,
   },
   radius: 10,
   color: 'blue',
@@ -191,32 +191,33 @@ function drawGameOver(state) {
   context.closePath();
 }
 
+let count = 0;
+
 // Draw Our Game
 function draw() {
-  
+  // Count Left
+  count = 0;
+  for (x = 0; x < brick.columnCount; x++) {
+    for (y = 0; y < brick.rowCount; y++) {
+      if (bricks[x][y].alive) {
+        count += 1;
+      }
+    }
+  }
   // Game Logic
   if (gameOver) {
     drawGameOver(true);
     //alert("Game Over");
     //document.location.reload();
-    clearInterval(interval);
+    //clearInterval(interval);
+  } else if (count === 0 ) {
+    drawGameOver(false);
+    //clearInterval(interval);
   } else {
-
-    // Count Left
-    let count = 0;
-    for (x = 0; x < brick.columnCount; x++) {
-      for (y = 0; y < brick.rowCount; y++) {
-        if (bricks[x][y].alive) {
-          count += 1;
-        }
-      }
-    }
-
     // Draw Left
     context.font = "16px Arial";
     context.fillStyle = "black";
     context.fillText("Left: " + count,8, 20);
-    
     
     // Draw
     context.clearRect(0,0,canvas.width, canvas.height);
@@ -225,12 +226,11 @@ function draw() {
     drawBricks();
     brickCollisionCalculate();
 
-    if (count === 0 ) {
-      drawGameOver(false);
-      clearInterval(interval);
-    }
+    requestAnimationFrame(draw);
   }
+  
 }
 
 // Define Game Loop
-let interval = setInterval(draw, 10);
+//let interval = setInterval(draw, 10);
+draw();
