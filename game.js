@@ -213,7 +213,7 @@ function drawGameOver(state) {
   context.font = "30px Arial";
   context.fillStyle = "black";
   context.fillText("Game Over",(canvas.width/2)-80, canvas.height/2);
-  context.fillText("Press r to reset",(canvas.width/2)-100, (canvas.height/2)+40);
+  context.fillText("Press r to reset",(canvas.width/2)-105, (canvas.height/2)+40);
   context.closePath();
 }
 
